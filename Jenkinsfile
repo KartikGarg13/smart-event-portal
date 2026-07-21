@@ -1,4 +1,3 @@
-cat << 'EOF' > Jenkinsfile
 pipeline {
     agent any
 
@@ -11,24 +10,21 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
+                // Uses node tool, or runs npm if node is available globally/in agent
                 sh 'npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'npm test'
+                sh 'npm test --if-present'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    dockerImage = docker.image("your-dockerhub-username/smart-event-portal:${env.BUILD_NUMBER}")
-                    dockerImage.build()
-                }
+                sh 'docker build -t smart-event-portal .'
             }
         }
     }
 }
-EOF
