@@ -16,7 +16,8 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'npm test --if-present'
+                // Added --passWithNoTests so the build doesn't fail if no tests exist yet
+                sh 'npm test -- --passWithNoTests'
             }
         }
 
