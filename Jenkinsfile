@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18-alpine'
-            args '-u root'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
@@ -27,9 +22,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // Note: This requires Docker-in-Docker if building nested containers, 
-                // but for testing the pipeline flow, let's make sure npm passes first!
-                echo 'Skipping inner docker build for container agent, or run standard sh command if supported.'
+                sh 'docker build -t smart-event-portal .'
             }
         }
     }
