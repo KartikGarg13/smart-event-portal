@@ -1,0 +1,1 @@
+{"name":"smart-event-portal","version":"1.0.0","description":"Smart Event Management Portal","main":"src/app.js","scripts":{"start":"node src/app.js","test":"jest --detectOpenHandles --forceExit"},"dependencies":{"cors":"^2.8.5","express":"^4.19.2"},"devDependencies":{"jest":"^29.7.0","supertest":"^6.3.4"}}

@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Event Management Portal — Enterprise Edition</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            accent: {
+              cyan: '#06b6d4',
+              emerald: '#10b981',
+              violet: '#8b5cf6',
+              rose: '#f43f5e',
+              amber: '#f59e0b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* ULTIMATE ULTRA-VIBRANT DYNAMIC BACKGROUND WITH MULTI-LAYER GLOW */
+    body.ultra-bg {
+      background: #020617 !important;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.55) 0px, transparent 45%),
+        radial-gradient(circle at 90% 15%, rgba(6, 182, 212, 0.5) 0px, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.45) 0px, transparent 55%),
+        radial-gradient(circle at 85% 85%, rgba(236, 72, 153, 0.45) 0px, transparent 50%),
+        radial-gradient(circle at 15% 90%, rgba(16, 185, 129, 0.35) 0px, transparent 45%),
+        linear-gradient(135deg, #020617 0%, #090d16 50%, #030712 100%) !important;
+      background-attachment: fixed !important;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #020617; }
+    ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #818cf8; }
+    
+    .glass-card {
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    
+    .glass-nav {
+      background: rgba(2, 6, 23, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(99, 102, 241, 0.35);
+    }
+
+    .glow-purple {
+      box-shadow: 0 0 120px -10px rgba(99, 102, 241, 0.65), 0 0 50px -5px rgba(6, 182, 212, 0.45);
+    }
+    
+    .gradient-border {
+      position: relative;
+      border-radius: 1.5rem;
+      background: linear-gradient(135deg, rgba(99,102,241,1), rgba(6,182,212,0.9), rgba(236,72,153,0.9));
+      padding: 2.5px;
+      box-shadow: 0 0 60px rgba(99, 102, 241, 0.5);
+    }
+
+    .card-zoom {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+    }
+    .card-zoom:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 40px 80px -15px rgba(99, 102, 241, 0.7);
+      border-color: rgba(99, 102, 241, 0.95);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.65; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    .animate-glow {
+      animation: pulseGlow 5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="h-full text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white flex flex-col ultra-bg min-h-screen relative overflow-x-hidden">
+
+  <!-- VIBRANT BACKGROUND ILLUMINATION ORBS -->
+  <div class="absolute top-0 left-1/4 w-[750px] h-[750px] bg-gradient-to-br from-indigo-500/45 via-purple-600/40 to-pink-500/35 rounded-full blur-[160px] pointer-events-none animate-glow"></div>
+  <div class="absolute top-1/3 right-5 w-[650px] h-[650px] bg-gradient-to-br from-cyan-400/40 via-blue-600/40 to-indigo-600/35 rounded-full blur-[160px] pointer-events-none"></div>
+  <div class="absolute bottom-10 left-10 w-[700px] h-[700px] bg-gradient-to-tr from-violet-600/40 via-fuchsia-500/35 to-emerald-400/30 rounded-full blur-[180px] pointer-events-none"></div>
+
+  <!-- ================= TOP NAVIGATION ================= -->
+  <header class="sticky top-0 z-40 glass-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchMainTab('browse'); resetFilters();">
+        <div class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-brand-500 via-accent-violet to-accent-cyan rounded-xl blur opacity-95 group-hover:opacity-100 transition duration-300"></div>
+          <div class="relative w-10 h-10 rounded-xl bg-slate-950 flex items-center justify-center border border-white/40 shadow-xl">
+            <i class="fa-solid fa-ticket text-brand-400 text-lg -rotate-12"></i>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-extrabold text-lg tracking-tight text-white flex items-center gap-2 drop-shadow">
+            SmartEvent<span class="bg-gradient-to-r from-brand-400 via-accent-violet to-accent-cyan bg-clip-text text-transparent">Portal</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-brand-500/40 text-brand-100 font-mono border border-brand-400 font-semibold uppercase tracking-wider hidden sm:inline-block shadow">Enterprise</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Main Navigation -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center p-1 bg-slate-950/90 border border-slate-700 rounded-xl font-medium text-xs shadow-inner">
+          <button id="navBrowseBtn" onclick="switchMainTab('browse')" class="px-3.5 py-1.5 rounded-lg text-white bg-brand-600 font-semibold shadow-md transition">
+            <i class="fa-solid fa-compass mr-1.5"></i>Browse Events
+          </button>
+          <button id="navHistoryBtn" onclick="switchMainTab('history')" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:text-white transition">
+            <i class="fa-solid fa-clock-rotate-left mr-1.5 text-accent-cyan"></i>My Bookings
+          </button>
+          <button id="navDevOpsBtn" onclick="switchMainTab('devops')" class="admin-only px-3.5 py-1.5 rounded-lg text-slate-300 hover:text-white transition hidden">
+            <i class="fa-solid fa-terminal mr-1.5 text-accent-emerald"></i>DevOps Control
+          </button>
+        </div>
+
+        <!-- Role Identity Badge -->
+        <div id="roleBadge" class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-slate-950/90 border border-slate-700 rounded-xl text-[11px] font-mono shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
+          <span id="roleBadgeText" class="text-slate-200 font-semibold">User Role</span>
+        </div>
+
+        <!-- Auth Button / Profile -->
+        <div class="flex items-center gap-2">
+          <button id="authTriggerBtn" onclick="openAuthModal('user')" class="flex items-center gap-2 px-3.5 py-2 text-xs font-bold text-white bg-slate-900/90 hover:bg-slate-800 border border-slate-600 rounded-xl transition shadow-md">
+            <i class="fa-solid fa-user-check text-accent-cyan"></i>
+            <span id="currentUserLabel">Login / Sign Up</span>
+          </button>
+
+          <button id="logoutBtn" onclick="logoutUser()" class="hidden px-3 py-2 text-xs font-bold text-rose-300 hover:text-rose-200 bg-rose-950/80 hover:bg-rose-900 border border-rose-800 rounded-xl transition shadow-md" title="Sign Out">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
+        </div>
+
+        <!-- Create Event Button (Admin Only) -->
+        <button 
+          id="addEventBtn"
+          onclick="openEventModal()" 
+          class="hidden flex items-center gap-2 px-3.5 py-2 text-xs font-bold text-white bg-gradient-to-r from-brand-600 via-accent-violet to-accent-cyan hover:opacity-95 rounded-xl transition shadow-lg shadow-brand-500/40"
+        >
+          <i class="fa-solid fa-plus"></i>
+          <span class="hidden sm:inline">Add Event</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 relative z-10">
+    
+    <!-- Dynamic Hero Banner with Rich Immersive Backdrop -->
+    <div class="gradient-border glow-purple">
+      <div class="rounded-2xl bg-slate-950/95 p-6 sm:p-10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-2xl border border-white/20 shadow-2xl">
+        
+        <!-- Background Lighting Inside Banner -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-brand-500/40 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-accent-cyan/35 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1600')] bg-cover bg-center opacity-25 pointer-events-none mix-blend-overlay"></div>
+        
+        <div class="relative z-10 space-y-4 max-w-2xl text-left">
+          <div class="flex items-center gap-2.5">
+            <span class="px-3.5 py-1 rounded-full text-[11px] font-mono font-bold bg-accent-emerald/30 text-accent-emerald border border-accent-emerald/60 flex items-center gap-2 shadow-md">
+              <span class="w-2 h-2 rounded-full bg-accent-emerald animate-ping"></span> Live Global Events Hub
+            </span>
+            <span class="text-xs text-slate-200 font-mono hidden sm:inline">Enterprise Edition</span>
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-lg">
+            Immersive Tech Summits & <span class="bg-gradient-to-r from-brand-400 via-accent-violet to-accent-cyan bg-clip-text text-transparent">Exclusive Passes</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal drop-shadow">
+            Step into world-class conferences, deep-dive technical workshops, and global masterclasses. Secure your designated seat instantly with our real-time interactive auditorium mapper.
+          </p>
+        </div>
+
+        <!-- Realtime System Metrics -->
+        <div class="w-full md:w-auto grid grid-cols-3 md:grid-cols-1 gap-3 relative z-10 shrink-0">
+          <div class="bg-slate-900/90 border border-slate-700 p-3.5 rounded-xl min-w-[150px] text-center md:text-left backdrop-blur-md shadow-xl">
+            <span class="text-[10px] text-slate-400 uppercase font-mono font-bold block">Active Events</span>
+            <span id="statActiveEvents" class="text-xl font-black text-white font-mono">0</span>
+          </div>
+          <div class="bg-slate-900/90 border border-slate-700 p-3.5 rounded-xl min-w-[150px] text-center md:text-left backdrop-blur-md shadow-xl">
+            <span class="text-[10px] text-slate-400 uppercase font-mono font-bold block">My Booked Passes</span>
+            <span id="statTicketsIssued" class="text-xl font-black text-accent-cyan font-mono">0</span>
+          </div>
+          <div class="bg-slate-900/90 border border-slate-700 p-3.5 rounded-xl min-w-[150px] text-center md:text-left backdrop-blur-md shadow-xl">
+            <span class="text-[10px] text-slate-400 uppercase font-mono font-bold block">Logged Identity</span>
+            <span id="statLoggedUser" class="text-xs font-bold text-accent-emerald font-mono flex items-center justify-center md:justify-start gap-1.5 mt-1 truncate">
+              john_doe
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 1: BROWSE UPCOMING EVENTS -->
+    <div id="tabBrowseView" class="space-y-6">
+      
+      <!-- Filters and Search Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-950/90 p-4 rounded-2xl border border-slate-700 backdrop-blur-2xl shadow-xl">
+        <!-- Search Input -->
+        <div class="relative w-full sm:w-80">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input 
+            type="text" 
+            id="searchInput"
+            oninput="handleSearch(this.value)"
+            placeholder="Search events, venues, topics..." 
+            class="w-full bg-slate-900 text-xs text-white placeholder-slate-400 pl-9 pr-4 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-brand-500 transition shadow-inner"
+          />
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+          <button onclick="filterCategory('All')" class="category-btn active px-3.5 py-2 rounded-xl text-xs font-semibold bg-brand-600 text-white border border-brand-500 transition whitespace-nowrap shadow-md">
+            All Events
+          </button>
+          <button onclick="filterCategory('Tech')" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-200 hover:text-white border border-slate-700 transition whitespace-nowrap">
+            <i class="fa-solid fa-code text-brand-400 mr-1.5"></i>Tech & AI
+          </button>
+          <button onclick="filterCategory('Conference')" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-200 hover:text-white border border-slate-700 transition whitespace-nowrap">
+            <i class="fa-solid fa-users text-accent-violet mr-1.5"></i>Conference
+          </button>
+          <button onclick="filterCategory('Workshop')" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-200 hover:text-white border border-slate-700 transition whitespace-nowrap">
+            <i class="fa-solid fa-laptop text-accent-cyan mr-1.5"></i>Workshop
+          </button>
+          <button onclick="filterCategory('Masterclass')" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-200 hover:text-white border border-slate-700 transition whitespace-nowrap">
+            <i class="fa-solid fa-graduation-cap text-accent-amber mr-1.5"></i>Masterclass
+          </button>
+        </div>
+      </div>
+
+      <!-- Events Cards Grid -->
+      <div id="eventsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <!-- VIEW 2: VIEW BOOKING HISTORY -->
+    <div id="tabHistoryView" class="space-y-6 hidden">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-4">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-receipt text-brand-400"></i> My Booking History
+          </h2>
+          <p class="text-xs text-slate-300">View digital passes and manage or cancel reservations.</p>
+        </div>
+      </div>
+
+      <div id="bookingHistoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+    <!-- VIEW 3: DEVOPS AUTOMATION & CONTROL CENTER -->
+    <div id="tabDevOpsView" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="glass-card rounded-2xl p-6 space-y-4 border border-slate-700">
+          <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+            <h3 class="font-bold text-white text-sm flex items-center gap-2">
+              <i class="fa-solid fa-gears text-brand-400"></i> CI/CD Pipeline Control
+            </h3>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-500/30 text-brand-200 border border-brand-500/50">GitHub Actions</span>
+          </div>
+          <div class="space-y-2.5 pt-2">
+            <button onclick="triggerPipelineStep('Automated Test Suite')" class="w-full p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-100 font-semibold flex items-center justify-between transition shadow-md">
+              <span><i class="fa-solid fa-vial-circle-check text-accent-emerald mr-2"></i>Run Tests</span>
+              <i class="fa-solid fa-play text-[10px] text-slate-400"></i>
+            </button>
+            <button onclick="triggerPipelineStep('Production Canary Deployment')" class="w-full p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-100 font-semibold flex items-center justify-between transition shadow-md">
+              <span><i class="fa-solid fa-rocket text-accent-rose mr-2"></i>Deploy Update</span>
+              <i class="fa-solid fa-play text-[10px] text-slate-400"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 bg-slate-950/95 border border-slate-700 rounded-2xl p-4 flex flex-col justify-between font-mono space-y-4 shadow-2xl backdrop-blur-xl">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="text-xs text-slate-200 font-bold"><i class="fa-solid fa-terminal text-accent-emerald mr-2"></i>Console Log</div>
+            <button onclick="clearCliLog()" class="text-[10px] text-slate-400 hover:text-white transition">Clear</button>
+          </div>
+          <div id="cliLog" class="h-64 overflow-y-auto text-[11px] text-slate-300 space-y-1.5 p-2 bg-black/70 rounded-xl border border-slate-900 shadow-inner">
+            <div><span class="text-slate-500">[00:00:00]</span> Administrative terminal active. Security profile loaded.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= MODAL: AUTHENTICATION ================= -->
+  <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onclick="toggleModal('authModal')"></div>
+    <div class="relative w-full max-w-sm bg-slate-900/95 border border-slate-700 rounded-2xl p-6 shadow-2xl space-y-5 backdrop-blur-2xl">
+      
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 id="authModalTitle" class="text-sm font-bold text-white">Portal Access</h3>
+        <button onclick="toggleModal('authModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="grid grid-cols-3 p-1 bg-slate-950 rounded-xl border border-slate-800 text-[11px] font-bold">
+        <button id="tabAuthUser" onclick="switchAuthTab('user')" class="py-1.5 rounded-lg text-white bg-brand-600 transition">User</button>
+        <button id="tabAuthAdmin" onclick="switchAuthTab('admin')" class="py-1.5 rounded-lg text-slate-300 hover:text-white transition">Admin</button>
+        <button id="tabAuthRegister" onclick="switchAuthTab('register')" class="py-1.5 rounded-lg text-slate-300 hover:text-white transition">Sign Up</button>
+      </div>
+
+      <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+        <input type="hidden" id="authMode" value="user" />
+        
+        <div>
+          <label id="authUsernameLabel" class="block text-xs font-semibold text-slate-200 mb-1">Username / Email</label>
+          <input type="text" id="authUsername" required placeholder="e.g. john_doe" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-xl p-3 focus:border-brand-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-200 mb-1">Password</label>
+          <input type="password" id="authPassword" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-xl p-3 focus:border-brand-500 focus:outline-none" />
+        </div>
+
+        <div id="registerConfirmPasswordGroup" class="hidden">
+          <label class="block text-xs font-semibold text-slate-200 mb-1">Confirm Password</label>
+          <input type="password" id="authConfirmPassword" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-xl p-3 focus:border-brand-500 focus:outline-none" />
+        </div>
+
+        <button type="submit" id="authSubmitBtn" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl transition shadow-lg shadow-brand-500/30">
+          Sign In as User
+        </button>
+      </form>
+
+      <div id="adminHint" class="text-[11px] text-slate-400 text-center font-mono pt-1 hidden">
+        Demo Admin Credentials: <span class="text-brand-400">admin</span> / <span class="text-brand-400">admin123</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: ADD / EDIT EVENT ================= -->
+  <div id="eventFormModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onclick="toggleModal('eventFormModal')"></div>
+    <div class="relative w-full max-w-lg bg-slate-900/95 border border-slate-700 rounded-2xl p-6 shadow-2xl space-y-6 backdrop-blur-2xl">
+      
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <h3 id="eventModalTitle" class="text-sm font-bold text-white">Publish Event</h3>
+        <button onclick="toggleModal('eventFormModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form onsubmit="handleSaveEvent(event)" class="space-y-4">
+        <input type="hidden" id="editingEventId" />
+        
+        <div>
+          <label class="block text-xs font-semibold text-slate-200 mb-1">Event Title</label>
+          <input type="text" id="eventTitle" required placeholder="e.g., Microservices Architecture Conference" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-xl p-3 focus:border-brand-500 focus:outline-none" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-200 mb-1">Category</label>
+            <select id="eventCategory" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-xl p-3 focus:border-brand-500 focus:outline-none">
+              <option value="Tech">Tech</option>
+              <option value="Conference">Conference</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Masterclass">Masterclass</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-200 mb-1">Price ($)</label>
+            <input type="number" id="eventPrice" min="0" step="0.01" required placeholder="79.99" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-xl p-3 focus:border-brand-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-200 mb-1">Location / Venue</label>
+          <input type="text" id="eventLocation" required placeholder="Main Hall A / Virtual" class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-xl p-3 focus:border-brand-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-200 mb-1">Cover Image URL (Unsplash)</label>
+          <input type="url" id="eventImage" required placeholder="https://images.unsplash.com/photo-..." class="w-full bg-slate-950 border border-slate-800 text-xs text-white rounded-xl p-3 focus:border-brand-500 focus:outline-none" />
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-brand-600 via-accent-violet to-accent-cyan hover:opacity-95 text-white font-bold text-xs rounded-xl shadow-lg transition">
+          Save Event Entry
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: SEAT RESERVATION & BOOKING ================= -->
+  <div id="seatPickerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onclick="toggleModal('seatPickerModal')"></div>
+    <div class="relative w-full max-w-lg bg-slate-900/95 border border-slate-700 rounded-2xl p-6 shadow-2xl space-y-6 backdrop-blur-2xl">
+      
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h3 id="seatPickerTitle" class="text-sm font-bold text-white">Select Your Seat</h3>
+          <p class="text-[11px] text-slate-400">Pick an available seat from the venue map</p>
+        </div>
+        <button onclick="toggleModal('seatPickerModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="w-full py-2 bg-gradient-to-r from-brand-600/40 via-accent-cyan/40 to-brand-600/40 border border-brand-500/60 rounded-xl text-center text-[10px] font-mono font-bold text-brand-200 uppercase tracking-widest shadow-md">
+        STAGE / PRESENTATION AREA
+      </div>
+
+      <div id="seatMapGrid" class="space-y-3 max-h-64 overflow-y-auto p-1"></div>
+
+      <button id="confirmBookingBtn" disabled onclick="confirmSeatBooking()" class="w-full py-3 bg-gradient-to-r from-brand-600 to-accent-cyan disabled:opacity-50 text-white font-bold text-xs rounded-xl transition shadow-lg">
+        Confirm Booking & Issue Pass
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: DIGITAL PASS DISPLAY ================= -->
+  <div id="ticketPassModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onclick="toggleModal('ticketPassModal')"></div>
+    <div class="relative w-full max-w-sm bg-slate-900/95 border border-slate-700 rounded-2xl p-6 shadow-2xl space-y-4 text-center backdrop-blur-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <span class="text-xs font-mono font-bold text-accent-emerald flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-check"></i> Digital Pass
+        </span>
+        <button onclick="toggleModal('ticketPassModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div id="ticketPassDetails" class="space-y-4"></div>
+
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <button id="cancelPassBtn" class="py-2.5 bg-rose-950/80 hover:bg-rose-900 text-rose-300 font-bold text-xs rounded-xl border border-rose-800 transition">
+          <i class="fa-solid fa-ban mr-1.5"></i>Cancel Booking
+        </button>
+        <button onclick="window.print()" class="py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs rounded-xl border border-slate-700 transition">
+          <i class="fa-solid fa-print mr-1.5"></i>Print Pass
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ================= APPLICATION SCRIPT ================= -->
+  <script>
+    let currentRole = 'user';
+    let loggedUser = 'john_doe';
+    let activeCategory = 'All';
+
+    let registeredUsers = [
+      { username: 'john_doe', password: 'password123' },
+      { username: 'jane_smith', password: 'password123' }
+    ];
+
+    let registeredAdmins = [
+      { username: 'admin', password: 'admin123' }
+    ];
+
+    let rawEvents = [
+      { 
+        id: '1', 
+        title: 'Cloud-Native Kubernetes Summit 2026', 
+        category: 'Tech', 
+        location: 'Auditorium A, Silicon Valley', 
+        price: 120.00, 
+        seatsTotal: 18, 
+        seatsBooked: ['A-2', 'B-4'], 
+        image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800' 
+      },
+      { 
+        id: '2', 
+        title: 'Global DevOps & GitOps Expo', 
+        category: 'Conference', 
+        location: 'Convention Center Hall 3', 
+        price: 85.50, 
+        seatsTotal: 18, 
+        seatsBooked: ['A-1'], 
+        image: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800' 
+      },
+      { 
+        id: '3', 
+        title: 'Microservices & Zero-Trust API Security', 
+        category: 'Workshop', 
+        location: 'Tech Lab 02 (Hybrid Virtual)', 
+        price: 45.00, 
+        seatsTotal: 18, 
+        seatsBooked: [], 
+        image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=800' 
+      },
+      { 
+        id: '4', 
+        title: 'Artificial Intelligence & Neural Networks Masterclass', 
+        category: 'Masterclass', 
+        location: 'Innovation Hub, Floor 5', 
+        price: 150.00, 
+        seatsTotal: 18, 
+        seatsBooked: ['C-1', 'C-2'], 
+        image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800' 
+      },
+      { 
+        id: '5', 
+        title: 'Cybersecurity Defense & Ethical Hacking Bootcamp', 
+        category: 'Workshop', 
+        location: 'Security Operations Center', 
+        price: 95.00, 
+        seatsTotal: 18, 
+        seatsBooked: ['A-5'], 
+        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800' 
+      },
+      { 
+        id: '6', 
+        title: 'Frontend Architecture & React 19 Ecosystem', 
+        category: 'Tech', 
+        location: 'Main Amphitheater', 
+        price: 65.00, 
+        seatsTotal: 18, 
+        seatsBooked: [], 
+        image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800' 
+      },
+      { 
+        id: '7', 
+        title: 'Global Tech Leadership & CTO Roundtable', 
+        category: 'Conference', 
+        location: 'Executive Boardroom East', 
+        price: 210.00, 
+        seatsTotal: 18, 
+        seatsBooked: ['B-2', 'B-3'], 
+        image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800' 
+      },
+      { 
+        id: '8', 
+        title: 'Quantum Computing & Algorithms Seminar', 
+        category: 'Tech', 
+        location: 'Research Pavilion Alpha', 
+        price: 180.00, 
+        seatsTotal: 18, 
+        seatsBooked: [], 
+        image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=800' 
+      }
+    ];
+
+    let mockBookings = [
+      { id: 'PASS-892102', eventId: '1', eventTitle: 'Cloud-Native Kubernetes Summit 2026', location: 'Auditorium A, Silicon Valley', seatCode: 'A-2', price: 120.00, user: 'john_doe' }
+    ];
+
+    let selectedEventForBooking = null;
+    let selectedSeatCode = null;
+
+    function renderEvents(filterText = '') {
+      const grid = document.getElementById('eventsGrid');
+      grid.innerHTML = '';
+
+      const filtered = rawEvents.filter(evt => {
+        const matchesCategory = activeCategory === 'All' || evt.category === activeCategory;
+        const matchesSearch = evt.title.toLowerCase().includes(filterText.toLowerCase()) || evt.location.toLowerCase().includes(filterText.toLowerCase());
+        return matchesCategory && matchesSearch;
+      });
+
+      document.getElementById('statActiveEvents').innerText = rawEvents.length;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-16 bg-slate-900/60 rounded-2xl border border-slate-700">
+            <i class="fa-solid fa-calendar-xmark text-slate-500 text-4xl mb-3"></i>
+            <p class="text-sm font-semibold text-slate-200">No events matched your selection.</p>
+            <p class="text-xs text-slate-400 mt-1">Try searching for a different keyword or category.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(evt => {
+        const availableSeats = evt.seatsTotal - evt.seatsBooked.length;
+        const card = document.createElement('div');
+        card.className = 'glass-card rounded-2xl overflow-hidden card-zoom border border-slate-700 flex flex-col justify-between relative group';
+        
+        card.innerHTML = `
+          <div>
+            <div class="h-44 relative overflow-hidden bg-slate-900">
+              <img src="${evt.image}" alt="${evt.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+              
+              <div class="absolute top-3 left-3 flex items-center gap-2">
+                <span class="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-lg bg-slate-950/90 backdrop-blur-md text-white border border-white/20 shadow-md">
+                  ${evt.category}
+                </span>
+              </div>
+
+              ${currentRole === 'admin' ? `
+                <div class="absolute top-3 right-3 flex items-center gap-1 bg-slate-950/90 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-lg">
+                  <button onclick="openEditEventModal('${evt.id}')" class="p-1.5 text-slate-200 hover:text-white text-xs" title="Edit Event"><i class="fa-solid fa-pen"></i></button>
+                  <button onclick="handleDeleteEvent('${evt.id}')" class="p-1.5 text-rose-400 hover:text-rose-300 text-xs" title="Delete Event"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              ` : ''}
+
+              <div class="absolute bottom-3 left-3 right-3">
+                <h3 class="text-sm sm:text-base font-extrabold text-white leading-snug drop-shadow-md line-clamp-1">${evt.title}</h3>
+              </div>
+            </div>
+
+            <div class="p-4 space-y-3 text-xs">
+              <div class="flex items-center justify-between text-slate-200">
+                <span class="flex items-center gap-1.5 truncate"><i class="fa-solid fa-location-dot text-brand-400 shrink-0"></i> <span class="truncate">${evt.location}</span></span>
+                <span class="text-accent-emerald font-extrabold font-mono text-sm shrink-0">$${evt.price.toFixed(2)}</span>
+              </div>
+
+              <div class="flex items-center justify-between text-[11px] font-mono text-slate-300 bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
+                <span>Available Seats:</span>
+                <span class="font-bold ${availableSeats > 0 ? 'text-accent-cyan' : 'text-accent-rose'}">${availableSeats} / ${evt.seatsTotal}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 pt-0">
+            <button 
+              onclick="openSeatPicker('${evt.id}')" 
+              class="w-full py-2.5 bg-gradient-to-r from-brand-600 via-accent-violet to-accent-cyan hover:opacity-95 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-brand-500/40"
+            >
+              <i class="fa-solid fa-ticket"></i>
+              <span>Book Ticket & Seat</span>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderBookingHistory() {
+      const container = document.getElementById('bookingHistoryGrid');
+      const userBookings = mockBookings.filter(b => b.user === loggedUser);
+
+      document.getElementById('statTicketsIssued').innerText = userBookings.length;
+
+      if (userBookings.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-16 bg-slate-900/60 rounded-2xl border border-slate-700">
+            <i class="fa-solid fa-ticket text-slate-500 text-4xl mb-3"></i>
+            <p class="text-sm font-semibold text-slate-200">No active ticket bookings for @${loggedUser}.</p>
+            <p class="text-xs text-slate-400 mt-1">Browse events and book your digital pass now.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = userBookings.map(b => `
+        <div class="glass-card p-4 rounded-2xl border border-slate-700 hover:border-brand-500 transition flex flex-col justify-between space-y-4 shadow-xl">
+          <div class="flex items-start justify-between cursor-pointer" onclick='openTicketPass(${JSON.stringify(b)})'>
+            <div class="space-y-1.5">
+              <span class="text-[10px] font-mono font-bold text-accent-emerald bg-accent-emerald/20 px-2.5 py-0.5 rounded-full border border-accent-emerald/30">CONFIRMED PASS</span>
+              <h4 class="text-xs font-bold text-white hover:text-brand-400 transition">${b.eventTitle}</h4>
+              <p class="text-[11px] text-slate-300"><i class="fa-solid fa-location-dot mr-1 text-brand-400"></i>${b.location}</p>
+              <p class="text-[11px] font-mono text-accent-cyan">Seat: <strong class="text-white">${b.seatCode}</strong> • Price: <strong class="text-accent-emerald">$${b.price.toFixed(2)}</strong></p>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-center shrink-0">
+              <i class="fa-solid fa-qrcode text-2xl text-slate-200"></i>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-800">
+            <button onclick='openTicketPass(${JSON.stringify(b)})' class="flex-1 py-2 bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-xs rounded-xl border border-slate-700 transition">
+              View Pass
+            </button>
+            <button onclick="cancelBooking('${b.id}')" class="px-3.5 py-2 bg-rose-950/60 hover:bg-rose-900 text-rose-300 font-semibold text-xs rounded-xl border border-rose-800 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-trash"></i> Cancel
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function switchMainTab(tab) {
+      document.getElementById('tabBrowseView').classList.add('hidden');
+      document.getElementById('tabHistoryView').classList.add('hidden');
+      document.getElementById('tabDevOpsView').classList.add('hidden');
+
+      document.getElementById('navBrowseBtn').className = 'px-3.5 py-1.5 rounded-lg text-slate-300 hover:text-white transition';
+      document.getElementById('navHistoryBtn').className = 'px-3.5 py-1.5 rounded-lg text-slate-300 hover:text-white transition';
+      const devOpsBtn = document.getElementById('navDevOpsBtn');
+      if (devOpsBtn) devOpsBtn.className = 'admin-only px-3.5 py-1.5 rounded-lg text-slate-300 hover:text-white transition hidden';
+
+      if (tab === 'browse') {
+        document.getElementById('tabBrowseView').classList.remove('hidden');
+        document.getElementById('navBrowseBtn').className = 'px-3.5 py-1.5 rounded-lg text-white bg-brand-600 font-semibold shadow-md transition';
+        renderEvents();
+      } else if (tab === 'history') {
+        document.getElementById('tabHistoryView').classList.remove('hidden');
+        document.getElementById('navHistoryBtn').className = 'px-3.5 py-1.5 rounded-lg text-white bg-brand-600 font-semibold shadow-md transition';
+        renderBookingHistory();
+      } else if (tab === 'devops' && currentRole === 'admin') {
+        document.getElementById('tabDevOpsView').classList.remove('hidden');
+        if (devOpsBtn) devOpsBtn.className = 'admin-only px-3.5 py-1.5 rounded-lg text-white bg-brand-600 font-semibold shadow-md transition';
+      }
+    }
+
+    function filterCategory(category) {
+      activeCategory = category;
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.className = 'category-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-slate-300 hover:text-white border border-slate-700 transition whitespace-nowrap';
+        if (btn.textContent.trim().includes(category) || (category === 'All' && btn.textContent.trim().includes('All'))) {
+          btn.className = 'category-btn active px-3.5 py-2 rounded-xl text-xs font-semibold bg-brand-600 text-white border border-brand-500 transition whitespace-nowrap shadow-md';
+        }
+      });
+      renderEvents(document.getElementById('searchInput').value);
+    }
+
+    function handleSearch(val) {
+      renderEvents(val);
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      filterCategory('All');
+    }
+
+    function openAuthModal(defaultTab = 'user') {
+      switchAuthTab(defaultTab);
+      toggleModal('authModal');
+    }
+
+    function switchAuthTab(mode) {
+      document.getElementById('authMode').value = mode;
+      const userBtn = document.getElementById('tabAuthUser');
+      const adminBtn = document.getElementById('tabAuthAdmin');
+      const regBtn = document.getElementById('tabAuthRegister');
+      const regGroup = document.getElementById('registerConfirmPasswordGroup');
+      const submitBtn = document.getElementById('authSubmitBtn');
+      const adminHint = document.getElementById('adminHint');
+      const usernameLabel = document.getElementById('authUsernameLabel');
+
+      userBtn.className = 'py-1.5 rounded-lg text-slate-300 hover:text-white transition';
+      adminBtn.className = 'py-1.5 rounded-lg text-slate-300 hover:text-white transition';
+      regBtn.className = 'py-1.5 rounded-lg text-slate-300 hover:text-white transition';
+      regGroup.classList.add('hidden');
+      adminHint.classList.add('hidden');
+
+      if (mode === 'user') {
+        userBtn.className = 'py-1.5 rounded-lg text-white bg-brand-600 transition';
+        submitBtn.innerText = 'Sign In as User';
+        usernameLabel.innerText = 'Username';
+      } else if (mode === 'admin') {
+        adminBtn.className = 'py-1.5 rounded-lg text-white bg-brand-600 transition';
+        submitBtn.innerText = 'Authenticate as Admin';
+        usernameLabel.innerText = 'Admin Username';
+        adminHint.classList.remove('hidden');
+      } else if (mode === 'register') {
+        regBtn.className = 'py-1.5 rounded-lg text-white bg-brand-600 transition';
+        submitBtn.innerText = 'Create Account';
+        usernameLabel.innerText = 'Choose Username';
+        regGroup.classList.remove('hidden');
+      }
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const mode = document.getElementById('authMode').value;
+      const username = document.getElementById('authUsername').value.trim();
+      const password = document.getElementById('authPassword').value;
+
+      if (mode === 'register') {
+        const confirmPass = document.getElementById('authConfirmPassword').value;
+        if (password !== confirmPass) {
+          showToast('Passwords do not match!', 'error');
+          return;
+        }
+        if (registeredUsers.some(u => u.username === username)) {
+          showToast('Username already taken!', 'error');
+          return;
+        }
+        registeredUsers.push({ username, password });
+        showToast(`Account @${username} successfully registered!`, 'success');
+        toggleModal('authModal');
+        loginUserSession('user', username);
+      } else if (mode === 'user') {
+        const found = registeredUsers.find(u => u.username === username && u.password === password);
+        if (found) {
+          toggleModal('authModal');
+          loginUserSession('user', username);
+          showToast(`Welcome back, @${username}!`, 'success');
+        } else {
+          showToast('Invalid standard user credentials.', 'error');
+        }
+      } else if (mode === 'admin') {
+        const found = registeredAdmins.find(a => a.username === username && a.password === password);
+        if (found) {
+          toggleModal('authModal');
+          loginUserSession('admin', username);
+          showToast(`Admin portal access granted.`, 'success');
+        } else {
+          showToast('Invalid administrative credentials.', 'error');
+        }
+      }
+    }
+
+    function loginUserSession(role, username) {
+      currentRole = role;
+      loggedUser = username;
+
+      document.getElementById('currentUserLabel').innerText = username;
+      document.getElementById('statLoggedUser').innerText = username;
+      document.getElementById('roleBadgeText').innerText = role === 'admin' ? 'Admin Controller' : 'Standard User';
+      document.getElementById('logoutBtn').classList.remove('hidden');
+
+      const addEventBtn = document.getElementById('addEventBtn');
+      const navDevOpsBtn = document.getElementById('navDevOpsBtn');
+
+      if (role === 'admin') {
+        addEventBtn.classList.remove('hidden');
+        navDevOpsBtn.classList.remove('hidden');
+      } else {
+        addEventBtn.classList.add('hidden');
+        navDevOpsBtn.classList.add('hidden');
+        if (document.getElementById('tabDevOpsView').classList.contains('hidden') === false) {
+          switchMainTab('browse');
+        }
+      }
+      renderEvents(document.getElementById('searchInput').value);
+    }
+
+    function logoutUser() {
+      currentRole = 'user';
+      loggedUser = 'john_doe';
+      document.getElementById('currentUserLabel').innerText = 'Login / Sign Up';
+      document.getElementById('statLoggedUser').innerText = 'john_doe';
+      document.getElementById('roleBadgeText').innerText = 'User Role';
+      document.getElementById('logoutBtn').classList.add('hidden');
+      document.getElementById('addEventBtn').classList.add('hidden');
+      document.getElementById('navDevOpsBtn').classList.add('hidden');
+      switchMainTab('browse');
+      showToast('Signed out successfully.', 'info');
+    }
+
+    function openEventModal() {
+      document.getElementById('eventModalTitle').innerText = 'Publish New Event';
+      document.getElementById('editingEventId').value = '';
+      document.getElementById('eventTitle').value = '';
+      document.getElementById('eventPrice').value = '';
+      document.getElementById('eventLocation').value = '';
+      document.getElementById('eventImage').value = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800';
+      toggleModal('eventFormModal');
+    }
+
+    function openEditEventModal(id) {
+      const evt = rawEvents.find(e => e.id === id);
+      if (!evt) return;
+      document.getElementById('eventModalTitle').innerText = 'Edit Event Entry';
+      document.getElementById('editingEventId').value = evt.id;
+      document.getElementById('eventTitle').value = evt.title;
+      document.getElementById('eventCategory').value = evt.category;
+      document.getElementById('eventPrice').value = evt.price;
+      document.getElementById('eventLocation').value = evt.location;
+      document.getElementById('eventImage').value = evt.image;
+      toggleModal('eventFormModal');
+    }
+
+    function handleSaveEvent(e) {
+      e.preventDefault();
+      const editingId = document.getElementById('editingEventId').value;
+      const title = document.getElementById('eventTitle').value;
+      const category = document.getElementById('eventCategory').value;
+      const price = parseFloat(document.getElementById('eventPrice').value);
+      const location = document.getElementById('eventLocation').value;
+      const image = document.getElementById('eventImage').value;
+
+      if (editingId) {
+        const evt = rawEvents.find(e => e.id === editingId);
+        if (evt) {
+          evt.title = title;
+          evt.category = category;
+          evt.price = price;
+          evt.location = location;
+          evt.image = image;
+          showToast('Event updated successfully!', 'success');
+        }
+      } else {
+        const newEvt = {
+          id: Date.now().toString(),
+          title,
+          category,
+          location,
+          price,
+          seatsTotal: 18,
+          seatsBooked: [],
+          image
+        };
+        rawEvents.push(newEvt);
+        showToast('New event published successfully!', 'success');
+      }
+
+      toggleModal('eventFormModal');
+      renderEvents(document.getElementById('searchInput').value);
+    }
+
+    function handleDeleteEvent(id) {
+      if (!confirm('Are you sure you want to delete this event?')) return;
+      rawEvents = rawEvents.filter(e => e.id !== id);
+      showToast('Event deleted.', 'info');
+      renderEvents(document.getElementById('searchInput').value);
+    }
+
+    function openSeatPicker(eventId) {
+      const evt = rawEvents.find(e => e.id === eventId);
+      if (!evt) return;
+      selectedEventForBooking = evt;
+      selectedSeatCode = null;
+      document.getElementById('seatPickerTitle').innerText = `Select Seat: ${evt.title}`;
+      document.getElementById('confirmBookingBtn').disabled = true;
+
+      const mapGrid = document.getElementById('seatMapGrid');
+      mapGrid.innerHTML = '';
+
+      const rows = ['A', 'B', 'C'];
+      const colsPerSeat = 6;
+
+      rows.forEach(rowLetter => {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'flex items-center justify-center gap-2';
+        for (let i = 1; i <= colsPerSeat; i++) {
+          const seatCode = `${rowLetter}-${i}`;
+          const isBooked = evt.seatsBooked.includes(seatCode);
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.id = `seat-${seatCode}`;
+          if (isBooked) {
+            btn.className = 'w-10 h-10 rounded-xl bg-slate-950 text-slate-700 border border-slate-900 text-xs font-mono font-bold cursor-not-allowed';
+            btn.disabled = true;
+            btn.innerHTML = seatCode;
+          } else {
+            btn.className = 'w-10 h-10 rounded-xl bg-slate-900 hover:bg-brand-600 text-slate-200 hover:text-white border border-slate-700 text-xs font-mono font-bold transition';
+            btn.innerHTML = seatCode;
+            btn.onclick = () => selectSeat(seatCode);
+          }
+          rowDiv.appendChild(btn);
+        }
+        mapGrid.appendChild(rowDiv);
+      });
+
+      toggleModal('seatPickerModal');
+    }
+
+    function selectSeat(seatCode) {
+      selectedSeatCode = seatCode;
+      const rows = ['A', 'B', 'C'];
+      rows.forEach(r => {
+        for (let i = 1; i <= 6; i++) {
+          const code = `${r}-${i}`;
+          const btn = document.getElementById(`seat-${code}`);
+          if (btn && !btn.disabled) {
+            if (code === seatCode) {
+              btn.className = 'w-10 h-10 rounded-xl bg-brand-600 text-white border border-brand-400 text-xs font-mono font-bold shadow-lg shadow-brand-500/40 scale-105 transition';
+            } else {
+              btn.className = 'w-10 h-10 rounded-xl bg-slate-900 hover:bg-brand-600 text-slate-200 hover:text-white border border-slate-700 text-xs font-mono font-bold transition';
+            }
+          }
+        }
+      });
+      document.getElementById('confirmBookingBtn').disabled = false;
+    }
+
+    function confirmSeatBooking() {
+      if (!selectedEventForBooking || !selectedSeatCode) return;
+      const passId = 'PASS-' + Math.floor(100000 + Math.random() * 900000);
+
+      selectedEventForBooking.seatsBooked.push(selectedSeatCode);
+
+      const newBooking = {
+        id: passId,
+        eventId: selectedEventForBooking.id,
+        eventTitle: selectedEventForBooking.title,
+        location: selectedEventForBooking.location,
+        seatCode: selectedSeatCode,
+        price: selectedEventForBooking.price,
+        user: loggedUser
+      };
+
+      mockBookings.push(newBooking);
+      toggleModal('seatPickerModal');
+      renderEvents(document.getElementById('searchInput').value);
+      showToast(`Digital pass ${passId} successfully issued!`, 'success');
+      openTicketPass(newBooking);
+    }
+
+    function openTicketPass(booking) {
+      const details = document.getElementById('ticketPassDetails');
+      details.innerHTML = `
+        <div class="space-y-2 bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <span class="text-[10px] font-mono font-bold text-accent-cyan uppercase tracking-wider">${booking.id}</span>
+          <h4 class="text-sm font-extrabold text-white">${booking.eventTitle}</h4>
+          <p class="text-xs text-slate-300"><i class="fa-solid fa-location-dot mr-1"></i>${booking.location}</p>
+          <div class="flex justify-center gap-4 text-xs font-mono pt-2 border-t border-slate-900">
+            <span>Seat: <strong class="text-accent-emerald">${booking.seatCode}</strong></span>
+            <span>Holder: <strong class="text-brand-400">@${booking.user}</strong></span>
+          </div>
+        </div>
+        <div class="p-4 bg-white rounded-2xl flex items-center justify-center">
+          <i class="fa-solid fa-qrcode text-6xl text-slate-950"></i>
+        </div>
+      `;
+      document.getElementById('cancelPassBtn').onclick = () => {
+        cancelBooking(booking.id);
+        toggleModal('ticketPassModal');
+      };
+      toggleModal('ticketPassModal');
+    }
+
+    function cancelBooking(bookingId) {
+      const bIndex = mockBookings.findIndex(b => b.id === bookingId);
+      if (bIndex === -1) return;
+      const booking = mockBookings[bIndex];
+
+      const evt = rawEvents.find(e => e.id === booking.eventId);
+      if (evt) {
+        evt.seatsBooked = evt.seatsBooked.filter(s => s !== booking.seatCode);
+      }
+
+      mockBookings.splice(bIndex, 1);
+      renderEvents(document.getElementById('searchInput').value);
+      renderBookingHistory();
+      showToast('Booking cancelled successfully.', 'info');
+    }
+
+    function triggerPipelineStep(stepName) {
+      const log = document.getElementById('cliLog');
+      const timeStr = new Date().toTimeString().split(' ')[0];
+      log.innerHTML += `<div><span class="text-slate-500">[${timeStr}]</span> Initiating step: <span class="text-brand-400">${stepName}</span>...</div>`;
+      setTimeout(() => {
+        log.innerHTML += `<div><span class="text-slate-500">[${timeStr}]</span> <span class="text-accent-emerald font-bold">SUCCESS</span>: ${stepName} executed successfully without errors.</div>`;
+        log.scrollTop = log.scrollHeight;
+        showToast(`${stepName} completed successfully!`, 'success');
+      }, 1000);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function clearCliLog() {
+      document.getElementById('cliLog').innerHTML = '<div><span class="text-slate-500">[SYSTEM]</span> Log cleared.</div>';
+    }
+
+    function toggleModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.toggle('hidden');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      let borderColor = 'border-slate-700';
+      let icon = 'fa-circle-info text-accent-cyan';
+      if (type === 'success') { borderColor = 'border-accent-emerald/50'; icon = 'fa-circle-check text-accent-emerald'; }
+      if (type === 'error') { borderColor = 'border-rose-800'; icon = 'fa-triangle-exclamation text-rose-400'; }
+
+      toast.className = `glass-card pointer-events-auto px-4 py-3 rounded-xl border ${borderColor} shadow-2xl flex items-center gap-3 text-xs text-white transform transition-all duration-300 translate-y-2 opacity-0`;
+      toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i><span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderEvents();
+    });
+  </script>
+</body>
+</html>
