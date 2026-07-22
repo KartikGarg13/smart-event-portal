@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'kartik12325401/smart-event-portal'
         IMAGE_TAG = "v${env.BUILD_NUMBER}"
-        CRED_ID = 'docker-hub-credentials' // Make sure this matches the ID you set in Jenkins credentials
+        CRED_ID = 'docker-hub-credentials'
     }
 
     stages {
@@ -37,7 +37,6 @@ pipeline {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', "${env.CRED_ID}") {
                         sh "docker push ${env.DOCKER_IMAGE}:${env.IMAGE_TAG}"
-                        // Also tag and push as latest
                         sh "docker tag ${env.DOCKER_IMAGE}:${env.IMAGE_TAG} ${env.DOCKER_IMAGE}:latest"
                         sh "docker push ${env.DOCKER_IMAGE}:latest"
                     }
@@ -47,10 +46,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                // Automatically updates the image tag in your deployment.yaml file
                 sh "sed -i 's|image: .*|image: ${env.DOCKER_IMAGE}:${env.IMAGE_TAG}|g' k8s/deployment.yaml"
-                
-                // Apply the Kubernetes deployment with validation bypassed
                 sh 'kubectl apply -f k8s/deployment.yaml --validate=false'
             }
         }
@@ -64,10 +60,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully! Application deployed to Kubernetes with zero downtime.'
+            echo 'Pipeline completed successfully! Deployed to Kubernetes.'
         }
         failure {
-            echo 'Pipeline failed! Initiating automated rollback to previous stable version...'
+            echo 'Pipeline failed! Automatically rolling back...'
             sh 'kubectl rollout undo deployment/smart-event-portal-deployment'
         }
     }
