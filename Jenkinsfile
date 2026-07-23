@@ -16,19 +16,6 @@ pipeline {
             }
         }
 
-        stage('Verify Environment') {
-            steps {
-                sh '''
-                    echo "Node Version:"
-                    node -v
-                    echo "NPM Version:"
-                    npm -v
-                    echo "Docker Version:"
-                    docker --version
-                '''
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
@@ -37,28 +24,34 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'npm test || true'
+                sh '''
+                if [ -f package.json ]; then
+                    npm test || true
+                fi
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                    docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
-                    docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${DOCKER_IMAGE}:latest
-                '''
+                sh """
+                docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
+                docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${DOCKER_IMAGE}:latest
+                """
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Docker Login') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: "${CRED_ID}",
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: "${CRED_ID}",
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )
+                ]) {
                     sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                     '''
                 }
             }
@@ -66,37 +59,54 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                sh '''
-                    docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
-                    docker push ${DOCKER_IMAGE}:latest
-                '''
+                sh """
+                docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
+                docker push ${DOCKER_IMAGE}:latest
+                """
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh """
+                kubectl set image deployment/smart-event-portal-deployment \
+                smart-event-portal=${DOCKER_IMAGE}:${IMAGE_TAG}
+
+                kubectl rollout status deployment/smart-event-portal-deployment
+                """
+            }
+        }
+
+        stage('Verify Deployment') {
             steps {
                 sh '''
-                    docker rm -f smart-event-portal || true
-                    docker run -d \
-                    --name smart-event-portal \
-                    -p 3000:3000 \
-                    ${DOCKER_IMAGE}:${IMAGE_TAG}
+                kubectl get deployments
+                kubectl get pods
+                kubectl get services
                 '''
             }
         }
     }
 
     post {
-        always {
-            cleanWs()
-        }
 
         success {
-            echo 'Pipeline completed successfully!'
+            echo '========================================='
+            echo ' CI/CD Pipeline Completed Successfully!'
+            echo " Docker Image: ${DOCKER_IMAGE}:${IMAGE_TAG}"
+            echo ' Kubernetes Deployment Updated'
+            echo '========================================='
         }
 
         failure {
-            echo 'Pipeline failed!'
+            echo '========================================='
+            echo ' Pipeline Failed!'
+            echo ' Check the console logs.'
+            echo '========================================='
+        }
+
+        always {
+            sh 'docker image prune -f || true'
         }
     }
 }
