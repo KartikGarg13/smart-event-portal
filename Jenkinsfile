@@ -90,23 +90,29 @@ pipeline {
 
     post {
 
-        success {
-            echo '========================================='
-            echo ' CI/CD Pipeline Completed Successfully!'
-            echo " Docker Image: ${DOCKER_IMAGE}:${IMAGE_TAG}"
-            echo ' Kubernetes Deployment Updated'
-            echo '========================================='
-        }
-
-        failure {
-            echo '========================================='
-            echo ' Pipeline Failed!'
-            echo ' Check the console logs.'
-            echo '========================================='
-        }
-
-        always {
-            sh 'docker image prune -f || true'
-        }
+    success {
+        echo '========================================='
+        echo ' CI/CD Pipeline Completed Successfully!'
+        echo " Docker Image: ${DOCKER_IMAGE}:${IMAGE_TAG}"
+        echo ' Kubernetes Deployment Updated'
+        echo '========================================='
     }
+
+    failure {
+        echo '========================================='
+        echo ' Pipeline Failed!'
+        echo ' Rolling back Kubernetes Deployment...'
+        echo '========================================='
+
+        sh '''
+        kubectl rollout undo deployment/smart-event-portal-deployment
+        kubectl rollout status deployment/smart-event-portal-deployment
+        '''
+    }
+
+    always {
+        sh 'docker image prune -f || true'
+    }
+}
+    
 }
